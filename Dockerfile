@@ -4,14 +4,19 @@ FROM python:3.9-slim
 # Setting 'Working Directory' inside the container
 WORKDIR /app
 
-# Copying dependencies list
-COPY requirements.txt
+# Installing System Dependencies
+RUN apt-get update && apt-get install -y \
+    libgomp1 \
+    && rm -rf /var/lib/apt/lists/*
 
-# Installation of the dependencies
-RUN pip install --no-cache-dir -r -requirements.txt
+# Copy dependency list first (for better caching)
+COPY requirements.txt .
 
-# Copying the Application Code and Model files
-COPY fastapi_app.py
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the Application Code and Model Files
+COPY fastapi_app.py .
 COPY *.joblib .
 
 # Expose the port FastAPI will be running
