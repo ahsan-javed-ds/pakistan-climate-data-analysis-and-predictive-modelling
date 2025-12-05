@@ -75,7 +75,7 @@ The system incorporates specific analysis of Pakistan's July-August flood risk p
 - Historical flood correlation analysis
 - Seasonal vulnerability assessment
 
-![Flood_Risk_Analysis](images/flood_risk_analysis.png)
+![Flood_Risk_Analysis](media-assets/images/flood_risk_analysis.png)
 
 ### Climate Correlation Insights
 **Pearson Correlation**: 0.2031 between rainfall and temperature
@@ -91,7 +91,7 @@ Comprehensive visualization suite covering:
 - Extreme weather event identification
 - Regional climate variability assessment
 
-![Data_Visualization](images/Data_Visualization.png)
+![Data_Visualization](media-assets/images/Data_Visualization.png)
 
 ### Model Performance Visualization
 - Cross-validation performance metrics
@@ -99,7 +99,7 @@ Comprehensive visualization suite covering:
 - Feature importance ranking
 - Prediction accuracy across different seasons
 
-![Model_Evaluation](images/model_evaluation.png)
+![Model_Evaluation](media-assets/images/model_evaluation.png)
 
 ### Interactive Analysis Dashboard
 - Real-time prediction interface
@@ -117,7 +117,7 @@ Interactive web application providing:
 - Flood risk assessment interface
 - Model performance monitoring
 
-[📹 Watch Demo Video](videos/streamlit_app.mov)
+[📹 Watch Demo Video](media-assets/videos/streamlit_app.mov)
 
 ### Flask Web Service
 RESTful API service offering:
@@ -126,7 +126,7 @@ RESTful API service offering:
 - Model metadata access
 - Production-grade error handling
 
-![Model_Evaluation](images/flask_app.png)
+![Model_Evaluation](media-assets/images/flask_app.png)
 
 ### Model Serialization
 - **joblib format**: Optimized for sklearn-based models
@@ -161,7 +161,7 @@ For Streamlit App, it's better to directly run it via Google Colab Notebook
 
 For Flask, download the flask_app folder, create a Virtual Environmennt, install the **requirements.txt**, and run the below command:
 ```bash
-python app.py
+python fastapi_app.py
 ```
 
 ## Model Evaluation and Validation
