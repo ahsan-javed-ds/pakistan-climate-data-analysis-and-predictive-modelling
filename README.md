@@ -95,7 +95,7 @@ Pakistan faces devastating floods during July-August monsoon seasons. This syste
 
 ## Deployment Options
 
-### 1. FastAPI (Recommemded)
+### 1. FastAPI (Recommended)
 Production-ready API with MLOps pipeline
 
 ### 2. Streamlit Application
