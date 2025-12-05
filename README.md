@@ -4,7 +4,7 @@ Pakistan faces severe flooding challenges during July-August monsoon periods, wi
 
 **Key Achievement**: The system achieves R² = 0.992 for temperature prediction and R² = 0.716 for rainfall prediction using Pakistan's average climate data, providing reliable forecasting capabilities for flood risk assessment during critical monsoon periods.
 
-## Project Context & Significance
+## -- Project Context & Significance --
 
 ### Pakistan's Flood Challenge
 Pakistan experiences devastating floods during July-August monsoon seasons, causing significant economic and humanitarian impacts. This predictive system addresses the urgent need for accurate climate forecasting to support:
@@ -19,7 +19,106 @@ Pakistan experiences devastating floods during July-August monsoon seasons, caus
 ### Data Coverage
 The analysis utilizes comprehensive national average climate data for Pakistan, providing country-level insights while acknowledging regional variations. The 116-year historical dataset enables robust pattern recognition and long-term trend analysis essential for understanding Pakistan's complex monsoon-driven climate system.
 
-## Technical Architecture
+---
+
+## -- Production Deployment --
+
+## 1. FastAPI Deployment with MLOps Pipeline
+
+A stateless API with strict data validation and automated CI/CD workflows
+
+### Architecture & Key Feature:
+
+1. `High-Performance API`: Built with **FastAPI** for asynchronous inference and auto-generated Swagger documentation.
+2. `Dockerized Deployment`: Fully **containerized** environment ensuring high reproducibility across local dev and prod stages.
+3. `CI/CD Automation`: **GitHub Actions** pipeline performs syntax checks and dependency installation on every push.
+4. `Effective Error Handling`: Implements a **Fall-back strategy** to work if the models fails or input data lacks the context.
+5. `Type Safety`: Utilizes **pydantic** models to validate the inputs.
+
+### Startup Steps:
+
+**Option #1: Run with Docker (Recommended)**
+
+```
+# Build the docker image
+docker build -t pakistan-climate-engine .
+
+# Run the container
+docker run -p 8000:8000 pakistan-climate-engine
+```
+
+**Option #2: Run with Python (Locally)**
+```
+# Install the dependencies
+pip install -r requirements.txt
+
+# Start the server
+uvicorn fastapi_app:app --reload
+```
+
+#### API Documentations:
+Once running, access the Swagger Ui at `http://localhost8000/docs`
+
+**Endpoint: `/predict` (POST)**
+
+**Request:**
+```
+{
+   "year": 2025,
+   "month": 7
+}
+```
+**Response:**
+```
+{
+  "year": 2025,
+  "month": "July",
+  "rainfall": 56.6,
+  "temperature": 28.9,
+  "season": "Summer",
+  "is_monsoon": true,
+  "success": true,
+  "method": "pipeline"
+}
+```
+- `method` field indicates if the prediction came from the ML Pipeline (`pipeline`), the Smart Inference function (`smart_inference`), or the Heuristic Fallback (`heuristic_fallback`)
+
+---
+
+## 2. Streamlit Application
+Interactive web application providing:
+- Real-time climate predictions
+- Historical data exploration
+- Flood risk assessment interface
+- Model performance monitoring
+
+[📹 Watch Demo Video](media-assets/videos/streamlit_app.mov)
+
+---
+
+## 3. Flask Web Service
+RESTful API service offering:
+- Programmatic prediction endpoints
+- Batch processing capabilities
+- Model metadata access
+- Production-grade error handling
+
+---
+
+### Web Application Deployment
+
+For **Streamlit** App, it's better to directly run it via Google Colab Notebook
+
+For **Flask**, download the flask_app folder, create a Virtual Environmennt, install the **requirements.txt**, and run the below command:
+```bash
+python app.py
+```
+For **FastAPI**, please see the above section.
+
+---
+
+
+## -- Technical Architecture --
 
 ### Hybrid Modeling Strategy
 The system implements a sophisticated dual-approach architecture:
@@ -42,7 +141,7 @@ The system employs a comprehensive 67-feature engineering pipeline with an 81.48
 ### Conservative Feature Selection Protocol
 The feature selection process implements ensemble-based validation with multiple cross-validation layers to ensure production stability and prevent overfitting in the Pakistan-specific climate context.
 
-## Model Development and Training
+## -- Model Development and Training --
 
 ### Three-Phase Adaptive Training Strategy
 
@@ -53,12 +152,12 @@ The feature selection process implements ensemble-based validation with multiple
 This adaptive methodology demonstrates systematic model development with empirical validation at each stage.
 
 ### Algorithm Portfolio
-- Linear Regression (baseline performance benchmarking)
-- Ridge Regression (L2 regularization for stability)
-- Random Forest (ensemble robustness)
-- Gradient Boosting (sequential learning optimization)
-- XGBoost (gradient boosting with advanced regularization)
-- Support Vector Regression (kernel-based non-linear modeling)
+- `Linear Regression` (baseline performance benchmarking)
+- `Ridge Regression` (L2 regularization for stability)
+- `Random Forest` (ensemble robustness)
+- `Gradient Boosting` (sequential learning optimization)
+- `XGBoost` (gradient boosting with advanced regularization)
+- `Support Vector Regression` (kernel-based non-linear modeling)
 
 ### Production Model Performance
 - **Temperature Model**: R² = 0.992, demonstrating exceptional predictive accuracy
@@ -66,7 +165,7 @@ This adaptive methodology demonstrates systematic model development with empiric
 - **Cross-validation**: Robust performance across multiple validation folds
 - **Hyperparameter Optimization**: GridSearchCV with systematic parameter tuning
 
-## Flood Risk Analysis Framework
+## -- Flood Risk Analysis Framework --
 
 ### Pakistan Monsoon Pattern Analysis
 The system incorporates specific analysis of Pakistan's July-August flood risk periods, utilizing:
@@ -82,7 +181,7 @@ The system incorporates specific analysis of Pakistan's July-August flood risk p
 **Statistical Significance**: Significant but weak correlation reflecting Pakistan's complex meteorological dynamics
 **Interpretation**: Independent climate processes requiring specialized modeling approaches for each target variable
 
-## Data Visualization and Analysis
+## -- Data Visualization and Analysis --
 
 ### Exploratory Data Analysis
 Comprehensive visualization suite covering:
@@ -107,24 +206,7 @@ Comprehensive visualization suite covering:
 - Flood risk assessment tools
 - Seasonal forecasting capabilities
 
-
-## Production Deployment
-
-### Streamlit Application
-Interactive web application providing:
-- Real-time climate predictions
-- Historical data exploration
-- Flood risk assessment interface
-- Model performance monitoring
-
-[📹 Watch Demo Video](media-assets/videos/streamlit_app.mov)
-
-### Flask Web Service
-RESTful API service offering:
-- Programmatic prediction endpoints
-- Batch processing capabilities
-- Model metadata access
-- Production-grade error handling
+## -- Model Evaluation and Validation --
 
 ![Model_Evaluation](media-assets/images/flask_app.png)
 
@@ -134,44 +216,11 @@ RESTful API service offering:
 - **Metadata storage**: Model performance and configuration details
 - **Inference functions**: Standalone prediction capabilities
 
-## Installation and Setup
-
-### Prerequisites
-```bash
-pip install pandas numpy scikit-learn xgboost lightgbm
-pip install matplotlib seaborn plotly streamlit flask joblib
-```
-
-### Quick Start
-```python
-import joblib
-
-# Load production inference function
-predict_climate = joblib.load('inference_function.joblib')
-
-# Generate prediction for flood-critical period
-prediction = predict_climate(year=2024, month='august')
-print(f"August Rainfall Forecast: {prediction['rainfall']:.2f} mm")
-print(f"August Temperature Forecast: {prediction['temperature']:.2f}°C")
-```
-
-### Web Application Deployment
-
-For Streamlit App, it's better to directly run it via Google Colab Notebook
-
-For Flask, download the flask_app folder, create a Virtual Environmennt, install the **requirements.txt**, and run the below command:
-```bash
-python fastapi_app.py
-```
-
-## Model Evaluation and Validation
-
 ### Performance Metrics
 - **Root Mean Square Error (RMSE)**: Quantitative accuracy assessment
 - **Mean Absolute Error (MAE)**: Absolute prediction deviation
 - **R-squared (R²)**: Variance explanation capability
 - **Cross-validation scores**: Generalization performance validation
-
 
 ### Validation Strategy
 - **Time-series cross-validation**: Temporal data integrity preservation
@@ -179,7 +228,9 @@ python fastapi_app.py
 - **Holdout testing**: Final model validation on unseen data
 - **Statistical significance testing**: Confidence interval analysis
 
-## System Limitations and Considerations
+---
+
+## -- System Limitations and Considerations --
 
 ### Data Scope Limitations
 - **Temporal Range**: Historical data limited to 1901-2016 period
@@ -196,7 +247,9 @@ python fastapi_app.py
 - **Data Pipeline**: Automated data quality validation protocols
 - **Version Control**: Model versioning and rollback capabilities
 
-## Future Enhancement Roadmap
+---
+
+## -- Future Enhancement Roadmap --
 
 ### Technical Improvements
 - **Deep Learning Integration**: LSTM networks for sequential pattern recognition
@@ -208,50 +261,55 @@ python fastapi_app.py
 - **Regional Models**: Province-level prediction capabilities
 - **Alert Systems**: Automated flood risk notifications
 - **Mobile Interface**: Responsive design for field applications
-- **API Expansion**: Enhanced programmatic access features
+
+---
 
 ## Project Structure
 
 ```
 pakistan_temp_rainfall_predictive_modelling/
-├── pakistan_climate_data_analysis_and_predictive_modelling_ahsan_javed.ipynb  # Main analysis notebook
-├── README.md                                    # Project documentation
-├── DATASET_INFO.md                              # Dataset information and metadata
-├── raw_data/                                    # Historical climate datasets
-│   ├── rainfall_1901_2016_pak.csv               # Pakistan rainfall data (1901-2016)
-│   └── tempreture_1901_2016_pakistan.csv        # Pakistan temperature data (1901-2016)
-├── images/                                      # Visualization assets
-│   ├── Data_Visualization.png                   # Exploratory data analysis charts
-│   ├── advanced_visualization.png               # Advanced statistical visualizations
-│   ├── climate_EDA.png                          # Climate trend analysis
-│   ├── flask_app.png                            # Flask application interface
-│   ├── flood_risk_analysis.png                  # Flood risk assessment charts
-│   └── model_evaluation.png                     # Model performance metrics
-├── videos/                                      # Demo videos
-│   └── streamlit_app.mov                        # Streamlit application demonstration
+├── .github/
+│    └── workflows/
+│        └── test.yml                            # CI/CD workflow test file
 ├── Flask_app/                                   # Production Flask API service
-│   ├── app.py                                   # Main Flask application
-│   ├── requirements.txt                         # Python dependencies
-│   ├── rainfall_model_pipeline.joblib           # Trained rainfall model
-│   ├── temperature_model_pipeline.joblib        # Trained temperature model
-│   ├── model_metadata.joblib                    # Model performance metadata
-│   ├── smart_inference_function.joblib          # Optimized prediction function
-│   └── templates/
-│       └── index.html                             # Web interface template
-├── Streamlit_app/                                 # Interactive web dashboard
-│   └── streamlit_app.py                           # Streamlit application
-└── flood_risk_analysis_report/                    # Analysis reports
-    └── Pakistan_Weather_Report_20250723_0606.pdf  # Comprehensive flood risk report
+│    ├── app.py                                
+│    ├── requirements.txt                     
+│    ├── rainfall_model_pipeline.joblib        
+│    ├── temperature_model_pipeline.joblib  
+│    ├── model_metadata.joblib                   
+│    ├── smart_inference_function.joblib          
+│    └── templates/
+│        └── index.html                          # Web interface template
+├── Streamlit_app/                                
+│    └── streamlit_app.py                        # Streamlit application
+├── media-assets                                 # Visualization assets
+│    ├── images/                                   
+│    │    ├── Data_Visualization.png                   
+│    │    ├── advanced_visualization.png               
+│    │    ├── climate_EDA.png                          
+│    │    ├── flask_app.png                            
+│    │    ├── flood_risk_analysis.png                  
+│    │    └── model_evaluation.png
+├──  └── videos/                                      
+│         └── streamlit_app.mov
+├── research/
+│    ├── dataset_info.md
+│    ├── flood_risk_analysis_report/              # Analysis reports
+│    │    └── Pakistan_Weather_Report_20250723_0606.pdf        
+│    └──   pakistan_climate_data_analysis_and_predictive_modelling_ahsan_javed.ipynb  # Main analysis and training notebook
+├── .gitignore
+├── Dockerfile
+├── LICENSE
+├── README.md                                   
+├── fastapi_app.py
+├── model_metadata.joblib
+├── rainfall_model_pipeline.joblib
+├── requirements.txt
+├── smart_inference_function.joblib
+└── temperature_model_pipeline.joblib
 ```
 
-## Research and Development Credits
-
-**Main Developer**: Ahsan Javed
-- Machine Learning Architecture Design
-- Feature Engineering Framework Development
-- Model Training and Optimization
-- Production System Implementation
-  
+---
 
 **Data Source**: CHISEL @ LUMS (Center for Climate Research and Development) 
 [Chisel_website](https://opendata.com.pk/organization/chisel)
@@ -259,21 +317,17 @@ pakistan_temp_rainfall_predictive_modelling/
 **Analysis Period**: 1901-2016 Pakistan Climate Dataset
 **Development Timeline**: Comprehensive iterative development with empirical validation
 
-## Technical Acknowledgments
-
-- **scikit-learn**: Core machine learning framework
-- **XGBoost/LightGBM**: Advanced gradient boosting implementations
-- **pandas/numpy**: Data processing and numerical computation
-- **matplotlib/seaborn/plotly**: Visualization and analysis tools
-- **Flask/Streamlit**: Web application frameworks
+---
 
 ## Contact and Collaboration
 
 For technical inquiries, model improvements, or collaboration opportunities regarding Pakistan's climate prediction capabilities, please contact through the project repository or professional networks.
 
-- [Linkedin](https://www.linkedin.com/in/ahsan-javed17)
-- [Github](https://github.com/ahsan-javed-ds)
-- Email: ahsan.javed1702@gmail.com
+**Author:**
+
+**Ahsan Javed** _Data Scientist & ML Engineer_
+- **Linkedin:** [Linkedin_link](https://www.linkedin.com/in/ahsan-javed17)
+- **Email:** ahsan.javed1702@gmail.com
 
 ---
 
