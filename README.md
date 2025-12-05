@@ -56,6 +56,7 @@ Pakistan faces devastating floods during July-August monsoon seasons. This syste
 - Emergency preparedness
 
 ![CNN_Pakistan_flood_image](https://media.cnn.com/api/v1/images/stellar/prod/gettyimages-2224810741.jpg?c=16x9&q=h_653,w_1160,c_fill/f_avif)
+*Picture Reference: CNN World Article (https://edition.cnn.com/2025/07/17/asia/pakistan-flood-deaths-climate-intl-hnk)*
 
 ## Technical Architecture
 
