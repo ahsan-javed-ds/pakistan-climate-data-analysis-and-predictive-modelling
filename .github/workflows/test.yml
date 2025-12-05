@@ -3,7 +3,7 @@ name: CI Pipeline
 # Trigger on push or pull request to the main branch or your feature branch
 on:
   push:
-    branches: [ "main", "feat/mlops-pipeline" ]
+    branches: [ "main", "feat/mlops-pipeline-addition" ]
   pull_request:
     branches: [ "main" ]
 
